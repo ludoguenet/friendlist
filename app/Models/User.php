@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -21,6 +23,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'gender',
         'email',
         'password',
     ];
@@ -81,6 +84,13 @@ class User extends Authenticatable
     public function friends(): \Staudenmeir\LaravelMergedRelations\Eloquent\Relations\MergedRelation
     {
         return $this->mergedRelation('friends');
+    }
+
+    public function scopePotentialFriends(Builder $query, int $userId)
+    {
+        $query->whereNot('users.id', $userId)
+            ->whereRaw('(select count(*) from friend_requests where `from` = users.id and `to` = ' . $userId . ') = 0')
+            ->whereRaw('(select count(*) from friend_requests where `from` = ' . $userId . ' and `to` = users.id) = 0');
     }
 
 }

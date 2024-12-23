@@ -24,7 +24,7 @@ class FriendController extends Controller
     public function create()
     {
         return Inertia::render('Friends/Create', [
-            'friends' => auth()->user()->receivedFriendRequests,
+            'requestFriends' => auth()->user()->receivedFriendRequests,
         ]);
     }
 

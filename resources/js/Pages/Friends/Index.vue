@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import { User } from '@/types';
 import { Head } from '@inertiajs/vue3';
+
 defineProps<{
-    friends: Array<{ id: number; name: string }>;
+    friends: Array<User>;
 }>();
 </script>
 
@@ -18,25 +20,53 @@ defineProps<{
 
         <div class="py-12">
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                    <div
+                <ul role="list" class="divide-y divide-gray-100">
+                    <li
                         v-for="friend in friends"
                         :key="friend.id"
-                        class="relative flex items-center space-x-3 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-sm focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:border-gray-400"
+                        class="flex items-center justify-between gap-x-6 py-5"
                     >
-                        <button class="min-w-0 flex-1">
-                            <a href="#" class="focus:outline-none">
-                                <span
-                                    class="absolute inset-0"
-                                    aria-hidden="true"
-                                />
-                                <p class="text-sm font-medium text-gray-900">
+                        <div class="min-w-0">
+                            <div class="flex items-start gap-x-3">
+                                <p
+                                    class="text-sm/6 font-semibold text-gray-900"
+                                >
                                     {{ friend.name }}
                                 </p>
-                            </a>
-                        </button>
-                    </div>
-                </div>
+                                <p
+                                    :class="[
+                                        'mt-0.5 whitespace-nowrap rounded-md px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset ring-zinc-300',
+                                    ]"
+                                >
+                                    {{ friend.gender }}
+                                </p>
+                            </div>
+                            <div
+                                class="mt-1 flex items-center gap-x-2 text-xs/5 text-gray-500"
+                            >
+                                <p class="whitespace-nowrap">
+                                    Inscrit le
+                                    <time :datetime="friend.created_at">{{
+                                        new Date(friend.created_at).getMonth() +
+                                        '/' +
+                                        new Date(
+                                            friend.created_at,
+                                        ).getFullYear()
+                                    }}</time>
+                                </p>
+                                <svg
+                                    viewBox="0 0 2 2"
+                                    class="size-0.5 fill-current"
+                                >
+                                    <circle cx="1" cy="1" r="1" />
+                                </svg>
+                                <p class="truncate" v-if="friend.bio">
+                                    {{ friend.bio }}
+                                </p>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
             </div>
         </div>
     </AuthenticatedLayout>
