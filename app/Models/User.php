@@ -4,17 +4,15 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Notifications\Notifiable;
 use Staudenmeir\LaravelMergedRelations\Eloquent\HasMergedRelationships;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, HasMergedRelationships;
+    use HasFactory, HasMergedRelationships, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -49,60 +47,5 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
-    }
-
-    public function sentFriendRequests(): BelongsToMany
-    {
-        return $this->defineBaseFriendRequestRelationship('from', 'to')
-            ->wherePivotNull('accepted_at')
-            ->wherePivotNull('refused_at');
-    }
-
-    public function receivedFriendRequests(): BelongsToMany
-    {
-        return $this->defineBaseFriendRequestRelationship('to', 'from')
-            ->wherePivotNull('accepted_at')
-            ->wherePivotNull('refused_at');
-    }
-
-    public function sentFriendsAccepted(): BelongsToMany
-    {
-        return $this->defineBaseFriendRequestRelationship('from', 'to')
-            ->wherePivotNotNull('accepted_at');
-    }
-
-    public function receivedFriendsAccepted(): BelongsToMany
-    {
-        return $this->defineBaseFriendRequestRelationship('to', 'from')
-            ->wherePivotNotNull('accepted_at');
-    }
-
-    public function sentBaseFriendRequests(): BelongsToMany
-    {
-        return $this->defineBaseFriendRequestRelationship('from', 'to');
-    }
-
-    public function receivedBaseFriendRequests(): BelongsToMany
-    {
-        return $this->defineBaseFriendRequestRelationship('to', 'from');
-    }
-
-    public function friends(): \Staudenmeir\LaravelMergedRelations\Eloquent\Relations\MergedRelation
-    {
-        return $this->mergedRelation('friends');
-    }
-
-    public function scopePotentialFriends(Builder $query, int $userId)
-    {
-        $query->whereNot('users.id', $userId)
-            ->whereDoesntHave('sentBaseFriendRequests', fn ($query) => $query->where('to', $userId))
-            ->whereDoesntHave('receivedBaseFriendRequests', fn ($query) => $query->where('from', $userId));
-    }
-
-    private function defineBaseFriendRequestRelationship(string $foreign, string $related): BelongsToMany
-    {
-        return $this->belongsToMany(self::class, 'friend_requests', $foreign, $related)
-            ->withPivot('accepted_at', 'refused_at')
-            ->withTimestamps();
     }
 }

@@ -1,342 +1,117 @@
 <template>
     <div>
-        <TransitionRoot as="template" :show="sidebarOpen">
-            <Dialog
-                class="relative z-50 lg:hidden"
-                @close="sidebarOpen = false"
-            >
-                <TransitionChild
-                    as="template"
-                    enter="transition-opacity ease-linear duration-300"
-                    enter-from="opacity-0"
-                    enter-to="opacity-100"
-                    leave="transition-opacity ease-linear duration-300"
-                    leave-from="opacity-100"
-                    leave-to="opacity-0"
-                >
-                    <div class="fixed inset-0 bg-gray-900/80" />
-                </TransitionChild>
-
-                <div class="fixed inset-0 flex">
-                    <TransitionChild
-                        as="template"
-                        enter="transition ease-in-out duration-300 transform"
-                        enter-from="-translate-x-full"
-                        enter-to="translate-x-0"
-                        leave="transition ease-in-out duration-300 transform"
-                        leave-from="translate-x-0"
-                        leave-to="-translate-x-full"
-                    >
-                        <DialogPanel
-                            class="relative mr-16 flex w-full max-w-xs flex-1"
-                        >
-                            <TransitionChild
-                                as="template"
-                                enter="ease-in-out duration-300"
-                                enter-from="opacity-0"
-                                enter-to="opacity-100"
-                                leave="ease-in-out duration-300"
-                                leave-from="opacity-100"
-                                leave-to="opacity-0"
-                            >
-                                <div
-                                    class="absolute left-full top-0 flex w-16 justify-center pt-5"
-                                >
-                                    <button
-                                        type="button"
-                                        class="-m-2.5 p-2.5"
-                                        @click="sidebarOpen = false"
-                                    >
-                                        <span class="sr-only"
-                                            >Close sidebar</span
-                                        >
-                                        <XMarkIcon
-                                            class="size-6 text-white"
-                                            aria-hidden="true"
-                                        />
-                                    </button>
-                                </div>
-                            </TransitionChild>
-                            <div
-                                class="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-2"
-                            >
-                                <div class="flex h-16 shrink-0 items-center">
-                                    <ApplicationLogo class="h-10 w-auto" />
-                                </div>
-                                <nav class="flex flex-1 flex-col">
-                                    <ul
-                                        role="list"
-                                        class="flex flex-1 flex-col gap-y-7"
-                                    >
-                                        <li>
-                                            <ul
-                                                role="list"
-                                                class="-mx-2 space-y-1"
-                                            >
-                                                <li
-                                                    v-for="item in navigation"
-                                                    :key="item.name"
-                                                >
-                                                    <a
-                                                        :href="item.href"
-                                                        :class="[
-                                                            item.current
-                                                                ? 'bg-gray-50 text-sky-600'
-                                                                : 'text-gray-700 hover:bg-gray-50 hover:text-sky-600',
-                                                            'group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold',
-                                                        ]"
-                                                    >
-                                                        <component
-                                                            :is="item.icon"
-                                                            :class="[
-                                                                item.current
-                                                                    ? 'text-sky-600'
-                                                                    : 'text-gray-400 group-hover:text-sky-600',
-                                                                'size-6 shrink-0',
-                                                            ]"
-                                                            aria-hidden="true"
-                                                        />
-                                                        {{ item.name }}
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li>
-                                            <div
-                                                class="text-xs/6 font-semibold text-gray-400"
-                                            >
-                                                Liens importants
-                                            </div>
-                                            <ul
-                                                role="list"
-                                                class="-mx-2 mt-2 space-y-1"
-                                            >
-                                                <li
-                                                    v-for="link in links"
-                                                    :key="link.name"
-                                                >
-                                                    <a
-                                                        :href="link.href"
-                                                        :class="[
-                                                            link.current
-                                                                ? 'bg-gray-50 text-sky-600'
-                                                                : 'text-gray-700 hover:bg-gray-50 hover:text-sky-600',
-                                                            'group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold',
-                                                        ]"
-                                                    >
-                                                        <span
-                                                            :class="[
-                                                                link.current
-                                                                    ? 'border-sky-600 text-sky-600'
-                                                                    : 'border-gray-200 text-gray-400 group-hover:border-sky-600 group-hover:text-sky-600',
-                                                                'flex size-6 shrink-0 items-center justify-center rounded-lg border bg-white text-[0.625rem] font-medium',
-                                                            ]"
-                                                            >{{
-                                                                link.initial
-                                                            }}</span
-                                                        >
-                                                        <span
-                                                            class="truncate"
-                                                            >{{
-                                                                link.name
-                                                            }}</span
-                                                        >
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </nav>
-                            </div>
-                        </DialogPanel>
-                    </TransitionChild>
-                </div>
-            </Dialog>
-        </TransitionRoot>
-
+        <!-- Sidebar gauche -->
         <div
-            class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col"
+            class="border-r border-gray-200 bg-white lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col"
         >
-            <div
-                class="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6"
-            >
-                <div class="flex h-16 shrink-0 items-center">
-                    <ApplicationLogo class="h-10 w-auto fill-sky-500" />
+            <div class="flex h-full flex-col px-4 py-6">
+                <!-- Profil utilisateur -->
+                <div class="flex items-center gap-3">
+                    <img
+                        class="h-12 w-12 rounded-full"
+                        src="https://www.laraveljutsu.net/images/avatar.jpg"
+                        alt="User avatar"
+                    />
+                    <div>
+                        <h2 class="text-lg font-semibold text-gray-900">
+                            Jin Keguar
+                        </h2>
+                        <p class="text-sm text-gray-500">Web Developer</p>
+                    </div>
                 </div>
-                <nav class="flex flex-1 flex-col">
-                    <ul role="list" class="flex flex-1 flex-col gap-y-7">
+
+                <!-- Liens supplémentaires -->
+                <div class="mt-10">
+                    <h3 class="text-sm font-semibold uppercase text-gray-500">
+                        Features
+                    </h3>
+                    <ul role="list" class="mt-4 space-y-3">
+                        <!-- Home -->
                         <li>
-                            <ul role="list" class="-mx-2 space-y-1">
-                                <li v-for="item in navigation" :key="item.name">
-                                    <a
-                                        :href="item.href"
-                                        :class="[
-                                            item.current
-                                                ? 'bg-gray-50 text-sky-600'
-                                                : 'text-gray-700 hover:bg-gray-50 hover:text-sky-600',
-                                            'group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold',
-                                        ]"
-                                    >
-                                        <component
-                                            :is="item.icon"
-                                            :class="[
-                                                item.current
-                                                    ? 'text-sky-600'
-                                                    : 'text-gray-400 group-hover:text-sky-600',
-                                                'size-6 shrink-0',
-                                            ]"
-                                            aria-hidden="true"
-                                        />
-                                        {{ item.name }}
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <div class="text-xs/6 font-semibold text-gray-400">
-                                Mes liens
-                            </div>
-                            <ul role="list" class="-mx-2 mt-2 space-y-1">
-                                <li v-for="link in links" :key="link.name">
-                                    <a
-                                        :href="link.href"
-                                        :class="[
-                                            link.current
-                                                ? 'bg-gray-50 text-sky-600'
-                                                : 'text-gray-700 hover:bg-gray-50 hover:text-sky-600',
-                                            'group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold',
-                                        ]"
-                                    >
-                                        <span
-                                            :class="[
-                                                link.current
-                                                    ? 'border-sky-600 text-sky-600'
-                                                    : 'border-gray-200 text-gray-400 group-hover:border-sky-600 group-hover:text-sky-600',
-                                                'flex size-6 shrink-0 items-center justify-center rounded-lg border bg-white text-[0.625rem] font-medium',
-                                            ]"
-                                            >{{ link.initial }}</span
-                                        >
-                                        <span class="truncate">{{
-                                            link.name
-                                        }}</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="-mx-6 mt-auto">
                             <a
-                                href="#"
-                                class="flex items-center gap-x-4 px-6 py-3 text-sm/6 font-semibold text-gray-900 hover:bg-gray-50"
+                                :href="route('dashboard')"
+                                class="flex items-center gap-x-3 rounded-md px-3 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50"
                             >
-                                <img
-                                    class="size-8 rounded-full bg-gray-50"
-                                    src="https://www.laraveljutsu.net/images/avatar.jpg"
-                                    alt=""
-                                />
-                                <span class="sr-only">Your profile</span>
-                                <span aria-hidden="true">
-                                    {{ $page.props.auth.user.name }}</span
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor"
+                                    class="size-6 text-gray-500"
                                 >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M2.25 12.76c0 1.6 1.123 2.994 2.707 3.227 1.068.157 2.148.279 3.238.364.466.037.893.281 1.153.671L12 21l2.652-3.978c.26-.39.687-.634 1.153-.67 1.09-.086 2.17-.208 3.238-.365 1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z"
+                                    />
+                                </svg>
+
+                                Home
+                            </a>
+                        </li>
+
+                        <!-- Friends -->
+                        <li>
+                            <a
+                                :href="route('friends.index')"
+                                class="flex items-center gap-x-3 rounded-md px-3 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50"
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor"
+                                    class="size-6 text-gray-500"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0ZM3.75 12h.007v.008H3.75V12Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm-.375 5.25h.007v.008H3.75v-.008Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
+                                    />
+                                </svg>
+
+                                Friends
+                            </a>
+                        </li>
+
+                        <!-- Requests -->
+                        <li>
+                            <a
+                                :href="route('friends.request')"
+                                class="flex items-center gap-x-3 rounded-md px-3 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50"
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor"
+                                    class="size-6 text-gray-500"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 0 0-3.7-3.7 48.678 48.678 0 0 0-7.324 0 4.006 4.006 0 0 0-3.7 3.7c-.017.22-.032.441-.046.662M19.5 12l3-3m-3 3-3-3m-12 3c0 1.232.046 2.453.138 3.662a4.006 4.006 0 0 0 3.7 3.7 48.656 48.656 0 0 0 7.324 0 4.006 4.006 0 0 0 3.7-3.7c.017-.22.032-.441.046-.662M4.5 12l3 3m-3-3-3 3"
+                                    />
+                                </svg>
+
+                                Requests
                             </a>
                         </li>
                     </ul>
-                </nav>
+                </div>
             </div>
         </div>
 
-        <div
-            class="sticky top-0 z-40 flex items-center gap-x-6 bg-white px-4 py-4 shadow-sm sm:px-6 lg:hidden"
-        >
-            <button
-                type="button"
-                class="-m-2.5 p-2.5 text-gray-700 lg:hidden"
-                @click="sidebarOpen = true"
-            >
-                <span class="sr-only">Open sidebar</span>
-                <Bars3Icon class="size-6" aria-hidden="true" />
-            </button>
-            <div class="flex-1 text-sm/6 font-semibold text-gray-900">
-                Dashboard
-            </div>
-            <a href="#">
-                <span class="sr-only">Your profile</span>
-                <img
-                    class="size-8 rounded-full bg-gray-50"
-                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                    alt=""
-                />
-            </a>
-        </div>
-
-        <main class="py-10 lg:pl-72">
-            <div class="px-4 sm:px-6 lg:px-8">
+        <!-- Main Content -->
+        <main class="lg:pl-48">
+            <div class="p-4 sm:p-6 lg:p-8">
                 <slot />
             </div>
         </main>
     </div>
 </template>
 
-<script setup>
-import ApplicationLogo from '@/Components/ApplicationLogo.vue';
-import {
-    Dialog,
-    DialogPanel,
-    TransitionChild,
-    TransitionRoot,
-} from '@headlessui/vue';
-import {
-    Bars3Icon,
-    HomeIcon,
-    IdentificationIcon,
-    UserGroupIcon,
-    XMarkIcon,
-} from '@heroicons/vue/24/outline';
-import { ref } from 'vue';
-
-const navigation = [
-    {
-        name: 'Dashboard',
-        href: route('dashboard'),
-        icon: HomeIcon,
-        current: route().current('dashboard'),
-    },
-    {
-        name: 'Mes ami.es',
-        href: route('friends.index'),
-        icon: UserGroupIcon,
-        current: route().current('friends.index'),
-    },
-    {
-        name: 'Mes demandes',
-        href: route('friends.requestFriends'),
-        icon: IdentificationIcon,
-        current: route().current('friends.requestFriends'),
-    },
-];
-
-const links = [
-    {
-        id: 1,
-        name: 'LaravelJutsu',
-        href: 'https://laraveljutsu.net',
-        initial: 'LJ',
-        current: false,
-    },
-    {
-        id: 2,
-        name: 'InertiaJS 2.0',
-        href: 'https://inertiajs.com/upgrade-guide',
-        initial: 'I',
-        current: false,
-    },
-    {
-        id: 3,
-        name: 'Laravel',
-        href: 'https://laravel.com',
-        initial: 'L',
-        current: false,
-    },
-];
-
-const sidebarOpen = ref(false);
-</script>
+<script setup></script>

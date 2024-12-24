@@ -23,7 +23,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::prefix('friends')->as('friends.')->group(function() {
+    Route::prefix('friends')->as('friends.')->group(function () {
         Route::get('/', [FriendController::class, 'index'])->name('index');
         Route::get('/request', [FriendController::class, 'requestFriends'])->name('requestFriends');
         Route::post('/request', [FriendController::class, 'request'])->name('request');

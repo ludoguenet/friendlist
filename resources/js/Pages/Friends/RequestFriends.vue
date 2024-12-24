@@ -39,10 +39,10 @@ defineProps<{
                                 </p>
                                 <p
                                     :class="[
-                                        'mt-0.5 whitespace-nowrap rounded-md px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset ring-zinc-300',
+                                        'mt-0.5 whitespace-nowrap rounded-md bg-green-50 px-1.5 py-0.5 text-xs font-medium text-green-400 ring-1 ring-inset ring-green-200',
                                     ]"
                                 >
-                                    {{ friend.gender }}
+                                    online
                                 </p>
                             </div>
                             <div
