@@ -4,7 +4,7 @@ import { User } from '@/types';
 import { Head, router } from '@inertiajs/vue3';
 
 const acceptFriend = (to: number) => {
-    router.put(route('friends.update', to));
+    router.put(route('friends.accept', to));
 };
 
 defineProps<{

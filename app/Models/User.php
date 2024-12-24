@@ -53,32 +53,38 @@ class User extends Authenticatable
 
     public function sentFriendRequests(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'friend_requests', 'from', 'to')
+        return $this->defineBaseFriendRequestRelationship('from', 'to')
             ->wherePivotNull('accepted_at')
-            ->wherePivotNull('refused_at')
-            ->withTimestamps();
+            ->wherePivotNull('refused_at');
     }
 
     public function receivedFriendRequests(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'friend_requests', 'to', 'from')
+        return $this->defineBaseFriendRequestRelationship('to', 'from')
             ->wherePivotNull('accepted_at')
-            ->wherePivotNull('refused_at')
-            ->withTimestamps();
+            ->wherePivotNull('refused_at');
     }
 
     public function sentFriendsAccepted(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'friend_requests', 'from', 'to')
-            ->wherePivotNotNull('accepted_at')
-            ->withTimestamps();
+        return $this->defineBaseFriendRequestRelationship('from', 'to')
+            ->wherePivotNotNull('accepted_at');
     }
 
-    public function receivedFriendAccepted(): BelongsToMany
+    public function receivedFriendsAccepted(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'friend_requests', 'to', 'from')
-            ->wherePivotNotNull('accepted_at')
-            ->withTimestamps();
+        return $this->defineBaseFriendRequestRelationship('to', 'from')
+            ->wherePivotNotNull('accepted_at');
+    }
+
+    public function sentBaseFriendRequests(): BelongsToMany
+    {
+        return $this->defineBaseFriendRequestRelationship('from', 'to');
+    }
+
+    public function receivedBaseFriendRequests(): BelongsToMany
+    {
+        return $this->defineBaseFriendRequestRelationship('to', 'from');
     }
 
     public function friends(): \Staudenmeir\LaravelMergedRelations\Eloquent\Relations\MergedRelation
@@ -89,8 +95,14 @@ class User extends Authenticatable
     public function scopePotentialFriends(Builder $query, int $userId)
     {
         $query->whereNot('users.id', $userId)
-            ->whereRaw('(select count(*) from friend_requests where `from` = users.id and `to` = ' . $userId . ') = 0')
-            ->whereRaw('(select count(*) from friend_requests where `from` = ' . $userId . ' and `to` = users.id) = 0');
+            ->whereDoesntHave('sentBaseFriendRequests', fn ($query) => $query->where('to', $userId))
+            ->whereDoesntHave('receivedBaseFriendRequests', fn ($query) => $query->where('from', $userId));
     }
 
+    private function defineBaseFriendRequestRelationship(string $foreign, string $related): BelongsToMany
+    {
+        return $this->belongsToMany(self::class, 'friend_requests', $foreign, $related)
+            ->withPivot('accepted_at', 'refused_at')
+            ->withTimestamps();
+    }
 }

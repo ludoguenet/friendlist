@@ -4,7 +4,7 @@ import { User } from '@/types';
 import { Head, router } from '@inertiajs/vue3';
 
 const requestFriend = (to: number) => {
-    router.post(route('friends.store'), { to });
+    router.post(route('friends.requestFriends'), { to });
 };
 
 defineProps<{
@@ -50,13 +50,18 @@ defineProps<{
                             >
                                 <p class="whitespace-nowrap">
                                     Inscrit le
-                                    <time :datetime="friend.created_at">{{
-                                        new Date(friend.created_at).getMonth() +
-                                        '/' +
-                                        new Date(
-                                            friend.created_at,
-                                        ).getFullYear()
-                                    }}</time>
+                                    <time :datetime="friend.created_at">
+                                        {{
+                                            new Date(
+                                                friend.created_at,
+                                            ).getMonth() +
+                                            1 +
+                                            '/' +
+                                            new Date(
+                                                friend.created_at,
+                                            ).getFullYear()
+                                        }}</time
+                                    >
                                 </p>
                                 <svg
                                     viewBox="0 0 2 2"
@@ -64,8 +69,8 @@ defineProps<{
                                 >
                                     <circle cx="1" cy="1" r="1" />
                                 </svg>
-                                <p class="truncate" v-if="friend.bio">
-                                    {{ friend.bio }}
+                                <p class="truncate">
+                                    {{ friend.bio ?? 'Pas de bio' }}
                                 </p>
                             </div>
                         </div>

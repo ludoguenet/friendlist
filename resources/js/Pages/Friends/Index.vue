@@ -31,7 +31,7 @@ defineProps<{
                                 <p
                                     class="text-sm/6 font-semibold text-gray-900"
                                 >
-                                    {{ friend.name }}
+                                    {{ friend.name }} ({{ friend.id }})
                                 </p>
                                 <p
                                     :class="[

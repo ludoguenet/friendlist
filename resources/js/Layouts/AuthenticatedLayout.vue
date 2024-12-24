@@ -308,9 +308,9 @@ const navigation = [
     },
     {
         name: 'Mes demandes',
-        href: route('friends.create'),
+        href: route('friends.requestFriends'),
         icon: IdentificationIcon,
-        current: route().current('friends.create'),
+        current: route().current('friends.requestFriends'),
     },
 ];
 
