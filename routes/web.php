@@ -26,7 +26,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('friends')->as('friends.')->group(function () {
         Route::get('/', [FriendController::class, 'index'])->name('index');
         Route::get('/request', [FriendController::class, 'requestFriends'])->name('requestFriends');
-        Route::post('/request', [FriendController::class, 'request'])->name('request');
+        Route::post('/request/{friend}', [FriendController::class, 'request'])->name('request');
         Route::post('/accept/{friend}', [FriendController::class, 'accept'])->name('accept');
     });
 });

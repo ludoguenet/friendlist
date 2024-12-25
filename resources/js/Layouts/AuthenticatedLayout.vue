@@ -14,7 +14,7 @@
                     />
                     <div>
                         <h2 class="text-lg font-semibold text-gray-900">
-                            Jin Keguar
+                            {{ $page.props.auth.user.name }}
                         </h2>
                         <p class="text-sm text-gray-500">Web Developer</p>
                     </div>
@@ -79,7 +79,7 @@
                         <!-- Requests -->
                         <li>
                             <a
-                                :href="route('friends.request')"
+                                :href="route('friends.requestFriends')"
                                 class="flex items-center gap-x-3 rounded-md px-3 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50"
                             >
                                 <svg

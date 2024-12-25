@@ -3,8 +3,8 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { User } from '@/types';
 import { Head, router } from '@inertiajs/vue3';
 
-const acceptFriend = (to: number) => {
-    router.put(route('friends.accept', to));
+const acceptFriend = (friend: number) => {
+    router.post(route('friends.accept', friend));
 };
 
 defineProps<{
