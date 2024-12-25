@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 use Staudenmeir\LaravelMergedRelations\Facades\Schema;
 
@@ -13,7 +14,7 @@ return new class extends Migration
     {
         Schema::createMergeView(
             'friends',
-            [(new User)->receivedAcceptedFriends(), (new User)->fromAcceptedFriends()]
+            [(new User())->fromAcceptedFriendRequests(), (new User())->receivedAcceptedFriendRequests()]
         );
     }
 

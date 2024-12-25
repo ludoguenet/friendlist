@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('friend_requests', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('from')->constrained('users')->deleteOnCascade();
-            $table->foreignId('to')->constrained('users')->deleteOnCascade();
+            $table->foreignId('from')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('to')->constrained('users')->cascadeOnDelete();
 
             $table->date('accepted_at')->nullable();
             $table->date('rejected_at')->nullable();

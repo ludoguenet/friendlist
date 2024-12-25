@@ -20,25 +20,25 @@ class FriendController extends Controller
     public function requestFriends()
     {
         return Inertia::render('Friends/RequestFriends', [
-            'requestFriends' => auth()->user()->receivedPendingFriends()->get(),
+            'requestFriends' => auth()->user()->receivedPendingFriendRequests()->get(),
         ]);
     }
 
     public function request(Request $request, User $friend)
     {
-        auth()->user()->fromPendingFriends()->syncWithoutDetaching($friend);
+        auth()->user()->fromPendingFriendRequests()->syncWithoutDetaching($friend->id);
 
-        return redirect()->back();
+        return back();
     }
 
     public function accept(User $friend)
     {
-        abort_if(auth()->user()->receivedPendingFriends()->where('from', $friend->id)->doesntExist(), 403);
+        abort_if($friend->fromPendingFriendRequests()->where('to', auth()->id())->doesntExist(), 404);
 
-        auth()->user()->receivedPendingFriends()->updateExistingPivot($friend, [
+        $friend->fromPendingFriendRequests()->updateExistingPivot(auth()->id(), [
             'accepted_at' => now(),
         ]);
 
-        return redirect()->back();
+        return back();
     }
 }

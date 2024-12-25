@@ -8,12 +8,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Staudenmeir\LaravelMergedRelations\Eloquent\HasMergedRelationships;
+use \Staudenmeir\LaravelMergedRelations\Eloquent\HasMergedRelationships;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, HasMergedRelationships, Notifiable;
+    use HasFactory, Notifiable, HasMergedRelationships;
 
     /**
      * The attributes that are mass assignable.
@@ -50,57 +50,56 @@ class User extends Authenticatable
         ];
     }
 
-    public function receivedPendingFriends(): BelongsToMany
+    public function fromBaseFriendRequests(): BelongsToMany
     {
-        return $this->baseFriends('to', 'from')
-            ->wherePivotNull('accepted_at')
-            ->wherePivotNull('rejected_at');
+        return $this->baseFriendsRelation('from', 'to');
     }
 
-    public function fromPendingFriends(): BelongsToMany
+    public function receivedBaseFriendRequests(): BelongsToMany
     {
-        return $this->baseFriends('from', 'to')
-            ->wherePivotNull('accepted_at')
-            ->wherePivotNull('rejected_at');
+        return $this->baseFriendsRelation('to', 'from');
     }
 
-    public function receivedAcceptedFriends(): BelongsToMany
+    public function fromPendingFriendRequests(): BelongsToMany
     {
-        return $this->baseFriends('to', 'from')->wherePivotNotNull('accepted_at');
+        return $this->baseFriendsRelation('from', 'to')->wherePivotNull('accepted_at')->wherePivotNull('rejected_at');
     }
 
-    public function fromAcceptedFriends(): BelongsToMany
+    public function receivedPendingFriendRequests(): BelongsToMany
     {
-        return $this->baseFriends('from', 'to')->wherePivotNotNull('accepted_at');
+        return $this->baseFriendsRelation('to', 'from')->wherePivotNull('accepted_at')->wherePivotNull('rejected_at');
     }
 
-    public function receivedBaseFriends(): BelongsToMany
+    public function fromAcceptedFriendRequests(): BelongsToMany
     {
-        return $this->baseFriends('to', 'from');
+        return $this->baseFriendsRelation('from', 'to')->wherePivotNotNull('accepted_at');
     }
 
-    public function fromBaseFriends(): BelongsToMany
+    public function receivedAcceptedFriendRequests(): BelongsToMany
     {
-        return $this->baseFriends('from', 'to');
+        return $this->baseFriendsRelation('to', 'from')->wherePivotNotNull('accepted_at');
     }
 
     public function friends(): \Staudenmeir\LaravelMergedRelations\Eloquent\Relations\MergedRelation
     {
-        return $this->mergedRelation('friends');
+        return $this->mergedRelationWithModel(self::class, 'friends');
     }
 
-    public function scopePotentialFriends($query): void
+    public function scopePotentialFriends($query, int $userId)
     {
-        $userId = auth()->id();
-
         $query->whereNot('id', $userId)
-            ->whereDoesntHave('receivedBaseFriends', fn ($query) => $query->where('from', $userId))
-            ->whereDoesntHave('fromBaseFriends', fn ($query) => $query->where('to', $userId));
+            ->whereDoesntHave('fromBaseFriendRequests', fn ($query) => $query->where('to', $userId))
+            ->whereDoesntHave('receivedBaseFriendRequests', fn ($query) => $query->where('from', $userId));
     }
 
-    private function baseFriends(string $foreign, string $related): BelongsToMany
+    private function baseFriendsRelation(string $foreign, string $related): BelongsToMany
     {
-        return $this->belongsToMany(self::class, 'friend_requests', $foreign, $related)
+        return $this->belongsToMany(
+            self::class,
+            'friend_requests',
+            $foreign,
+            $related
+        )
             ->withPivot('accepted_at', 'rejected_at')
             ->withTimestamps();
     }
