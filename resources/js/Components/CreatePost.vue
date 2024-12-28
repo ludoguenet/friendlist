@@ -10,7 +10,11 @@ import {
 
 const postActions = [
     { icon: PhotoIcon, text: 'Photo', color: 'text-green-600' },
-    { icon: VideoCameraIcon, text: 'Video', color: 'text-yellow-600 outline-none' },
+    {
+        icon: VideoCameraIcon,
+        text: 'Video',
+        color: 'text-yellow-600 outline-none',
+    },
     { icon: CalendarDaysIcon, text: 'Event', color: 'text-purple-600' },
     { icon: MapPinIcon, text: 'Location', color: 'text-red-600' },
 ];
@@ -35,7 +39,7 @@ const postActions = [
                 <textarea
                     rows="2"
                     placeholder="What's on your mind?"
-                    class="w-full resize-none rounded-2xl bg-gray-50 px-4 py-3 text-sm text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 ring-1 ring-yellow-400 focus:ring-yellow-500 border-transparent focus:border-transparent"
+                    class="w-full resize-none rounded-2xl border-transparent bg-gray-50 px-4 py-3 text-sm text-gray-900 placeholder-gray-500 ring-1 ring-yellow-400 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-yellow-500"
                 ></textarea>
                 <div
                     class="absolute bottom-3 right-3 flex items-center space-x-2"
@@ -76,7 +80,7 @@ const postActions = [
                 </button>
             </div>
             <button
-                class="inline-flex items-center justify-center rounded-full bg-yellow-500 px-6 py-2 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 outline-none focus:ring-offset-2"
+                class="inline-flex items-center justify-center rounded-full bg-yellow-500 px-6 py-2 text-sm font-semibold text-white shadow-sm outline-none transition-all duration-200 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2"
             >
                 Post
             </button>

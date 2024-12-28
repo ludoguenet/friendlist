@@ -27,7 +27,9 @@ const navItems = [
                             :key="index"
                             :class="[
                                 'relative rounded-lg p-2 hover:bg-gray-100',
-                                item.active ? 'text-yellow-500' : 'text-gray-500',
+                                item.active
+                                    ? 'text-yellow-500'
+                                    : 'text-gray-500',
                             ]"
                         >
                             <component :is="item.icon" class="h-5 w-5" />
@@ -46,7 +48,7 @@ const navItems = [
                             class="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 transform text-gray-400"
                         />
                         <input
-                            class="w-64 rounded-lg bg-gray-100 px-4 py-2 pl-10 focus:outline-none focus:ring-2 ring-1 ring-yellow-400 focus:ring-yellow-500 border-transparent focus:border-transparent"
+                            class="w-64 rounded-lg border-transparent bg-gray-100 px-4 py-2 pl-10 ring-1 ring-yellow-400 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-yellow-500"
                             placeholder="Search people"
                         />
                     </div>
