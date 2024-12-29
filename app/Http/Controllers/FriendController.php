@@ -24,6 +24,17 @@ class FriendController extends Controller
         ]);
     }
 
+    public function potentialFriends()
+    {
+        if (auth()->guest()) {
+            return [];
+        }
+
+        $potentialFriends = auth()->user()->potentialFriends(auth()->id())->latest()->limit(3)->get();
+
+        return $potentialFriends;
+    }
+
     public function request(Request $request, User $friend)
     {
         auth()->user()->fromPendingFriendRequests()->syncWithoutDetaching($friend->id);

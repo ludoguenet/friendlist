@@ -20,7 +20,7 @@ const navItems = [
         <div class="mx-auto max-w-7xl px-4">
             <div class="flex h-16 items-center justify-between">
                 <div class="flex items-center space-x-8">
-                    <h1 class="text-2xl font-bold text-yellow-500">LARAVIBE</h1>
+                    <img src="/logo.png" alt="Logo" class="h-10 w-auto" />
                     <div class="hidden items-center space-x-6 md:flex">
                         <button
                             v-for="(item, index) in navItems"
