@@ -3,7 +3,7 @@ import { User } from '@/types';
 import SuggestedUser from './SuggestedUser.vue';
 
 defineProps<{
-    potentialFriends: Array<User>,
+    potentialFriends: Array<User>;
 }>();
 
 const handleConnect = (id: number) => {

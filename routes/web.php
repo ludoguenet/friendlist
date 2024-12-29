@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FeedController;
 use App\Http\Controllers\FriendController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
@@ -22,6 +23,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::resource('feeds', FeedController::class);
 
     Route::prefix('friends')->as('friends.')->group(function () {
         Route::get('/', [FriendController::class, 'index'])->name('index');

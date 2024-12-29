@@ -1,15 +1,14 @@
 <script setup lang="ts">
 import { User } from '@/types';
-import PeopleSuggestions from './PeopleSuggestions.vue';
-import { ref } from 'vue';
 import axios from 'axios';
+import { ref } from 'vue';
+import PeopleSuggestions from './PeopleSuggestions.vue';
 
 const potentialFriends = ref<Array<User>>([]);
 
-axios.get(route('friends.potentialFriends'))
-    .then(({ data }) => {
-        potentialFriends.value = data;
-    });
+axios.get(route('friends.potentialFriends')).then(({ data }) => {
+    potentialFriends.value = data;
+});
 </script>
 
 <template>

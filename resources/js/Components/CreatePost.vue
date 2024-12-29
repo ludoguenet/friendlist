@@ -7,6 +7,8 @@ import {
     PhotoIcon,
     VideoCameraIcon,
 } from '@heroicons/vue/24/outline';
+import FileAttachement from './FileAttachement.vue';
+import { useForm } from '@inertiajs/vue3'
 
 const postActions = [
     { icon: PhotoIcon, text: 'Photo', color: 'text-green-600' },
@@ -18,6 +20,19 @@ const postActions = [
     { icon: CalendarDaysIcon, text: 'Event', color: 'text-purple-600' },
     { icon: MapPinIcon, text: 'Location', color: 'text-red-600' },
 ];
+
+const form = useForm({
+  content: null,
+  attachments: null,
+})
+
+const handleFileAttachment = (attachments) => {
+    form.attachments = attachments;
+}
+
+const submit = () => {
+    form.post(route('feeds.store'));
+}
 </script>
 
 <template>
@@ -49,11 +64,14 @@ const postActions = [
                     >
                         <FaceSmileIcon class="h-5 w-5" />
                     </button>
-                    <button
+
+                    <FileAttachement @attach="handleFileAttachment" />
+
+                    <!-- <button
                         class="text-gray-400 transition-colors hover:text-gray-600"
                     >
                         <PaperClipIcon class="h-5 w-5" />
-                    </button>
+                    </button> -->
                 </div>
             </div>
         </div>
@@ -72,6 +90,7 @@ const postActions = [
                         class="h-5 w-5 transition-colors duration-200"
                         :class="action.color"
                     />
+
                     <span
                         class="text-sm font-medium text-gray-600 group-hover:text-gray-900"
                     >
@@ -80,6 +99,8 @@ const postActions = [
                 </button>
             </div>
             <button
+                @click.prevent="submit"
+                type="button"
                 class="inline-flex items-center justify-center rounded-full bg-yellow-500 px-6 py-2 text-sm font-semibold text-white shadow-sm outline-none transition-all duration-200 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2"
             >
                 Post
