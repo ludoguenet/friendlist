@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import CreatePost from '@/Components/CreatePost.vue';
+import FeedList from '@/Components/FeedList.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { User } from '@/types';
 import { Head } from '@inertiajs/vue3';
@@ -17,7 +18,8 @@ defineProps<{
     <Head title="Dashboard" />
 
     <AuthenticatedLayout>
-        <!-- Content -->
         <CreatePost />
+
+        <FeedList />
     </AuthenticatedLayout>
 </template>

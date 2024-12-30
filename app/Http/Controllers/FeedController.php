@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\File;
 
 class FeedController extends Controller
 {
@@ -27,7 +29,17 @@ class FeedController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
+        $validated = $request->validate([
+            'content' => 'required|string|max:255',
+            'attachments' => 'nullable|array',
+            'attachments.*' => [
+                'required',
+                File::image()
+                    ->min(1024)
+                    ->max(12 * 1024)
+                    ->dimensions(Rule::dimensions()->maxWidth(1000)->maxHeight(500)),
+            ],
+        ]);
     }
 
     /**

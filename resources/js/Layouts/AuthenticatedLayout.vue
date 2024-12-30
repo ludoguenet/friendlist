@@ -31,7 +31,25 @@ import SidebarLinks from '@/Components/SidebarLinks.vue';
 
                 <!-- Right Sidebar -->
                 <div class="col-span-3">
-                    <RightSidebar />
+                    <Suspense>
+                        <RightSidebar />
+
+                        <template #fallback>
+                            <div class="flex flex-row gap-2">
+                                <div
+                                    class="h-12 w-12 animate-pulse rounded-full bg-gray-300"
+                                ></div>
+                                <div class="flex flex-col gap-2">
+                                    <div
+                                        class="h-5 w-28 animate-pulse rounded-full bg-gray-300"
+                                    ></div>
+                                    <div
+                                        class="h-5 w-36 animate-pulse rounded-full bg-gray-300"
+                                    ></div>
+                                </div>
+                            </div>
+                        </template>
+                    </Suspense>
                 </div>
             </div>
         </main>

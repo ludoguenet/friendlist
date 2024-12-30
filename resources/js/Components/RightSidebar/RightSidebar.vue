@@ -6,9 +6,9 @@ import PeopleSuggestions from './PeopleSuggestions.vue';
 
 const potentialFriends = ref<Array<User>>([]);
 
-axios.get(route('friends.potentialFriends')).then(({ data }) => {
-    potentialFriends.value = data;
-});
+await axios
+    .get(route('friends.potentialFriends'))
+    .then(({ data }) => (potentialFriends.value = data));
 </script>
 
 <template>

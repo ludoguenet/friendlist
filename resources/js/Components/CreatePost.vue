@@ -3,12 +3,11 @@ import {
     CalendarDaysIcon,
     FaceSmileIcon,
     MapPinIcon,
-    PaperClipIcon,
     PhotoIcon,
     VideoCameraIcon,
 } from '@heroicons/vue/24/outline';
+import { useForm } from '@inertiajs/vue3';
 import FileAttachement from './FileAttachement.vue';
-import { useForm } from '@inertiajs/vue3'
 
 const postActions = [
     { icon: PhotoIcon, text: 'Photo', color: 'text-green-600' },
@@ -22,17 +21,17 @@ const postActions = [
 ];
 
 const form = useForm({
-  content: null,
-  attachments: null,
-})
+    content: null,
+    attachments: null,
+});
 
 const handleFileAttachment = (attachments) => {
     form.attachments = attachments;
-}
+};
 
 const submit = () => {
     form.post(route('feeds.store'));
-}
+};
 </script>
 
 <template>
@@ -52,6 +51,7 @@ const submit = () => {
             </div>
             <div class="relative flex-1">
                 <textarea
+                    v-model="form.content"
                     rows="2"
                     placeholder="What's on your mind?"
                     class="w-full resize-none rounded-2xl border-transparent bg-gray-50 px-4 py-3 text-sm text-gray-900 placeholder-gray-500 ring-1 ring-yellow-400 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-yellow-500"
@@ -75,6 +75,11 @@ const submit = () => {
                 </div>
             </div>
         </div>
+
+        <template v-if="$page.props.errors">
+            {{ $page.props.errors?.content }}
+            {{ $page.props.errors?.attachments }}
+        </template>
 
         <div
             class="flex items-center justify-between border-t border-gray-100 pt-4"
