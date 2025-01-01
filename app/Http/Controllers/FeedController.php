@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Feed;
+use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Validation\Rules\File;
 
 class FeedController extends Controller
@@ -13,7 +16,7 @@ class FeedController extends Controller
      */
     public function index()
     {
-        //
+        return Feed::with('user', 'attachments')->latest()->get();
     }
 
     /**
@@ -34,12 +37,23 @@ class FeedController extends Controller
             'attachments' => 'nullable|array',
             'attachments.*' => [
                 'required',
-                File::image()
-                    ->min(1024)
-                    ->max(12 * 1024)
-                    ->dimensions(Rule::dimensions()->maxWidth(1000)->maxHeight(500)),
+                File::image(['jpeg', 'png', 'jpg', 'gif'])->max(2048),
             ],
         ]);
+
+        $feed = $request->user()->feeds()->create([
+            'content' => $validated['content'],
+        ]);
+
+        if (! empty($validated['attachments'])) {
+            $attachments = collect($validated['attachments'])
+                ->map(fn ($attachment) => ['path' => $attachment->store('attachments', 'public')])
+                ->all();
+
+            $feed->attachments()->createMany($attachments);
+        };
+
+        return back()->with('feeds', Feed::with('user', 'attachments')->latest()->get());
     }
 
     /**

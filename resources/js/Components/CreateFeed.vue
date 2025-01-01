@@ -30,7 +30,13 @@ const handleFileAttachment = (attachments) => {
 };
 
 const submit = () => {
-    form.post(route('feeds.store'));
+    form.post(route('feeds.store'), {
+        preserveScroll: true,
+        preserveState: false,
+        onSuccess: () => {
+            form.reset();
+        },
+    });
 };
 </script>
 
@@ -41,8 +47,8 @@ const submit = () => {
         <div class="mb-6 flex items-center space-x-4">
             <div class="relative">
                 <img
-                    src="/avatar.png"
-                    alt="Profile"
+                    :src="$page.props.auth.user.profile_picture || '/default-avatar.png'"
+                    :alt="$page.props.auth.user.name"
                     class="h-12 w-12 rounded-full object-cover ring-2 ring-gray-100"
                 />
                 <span

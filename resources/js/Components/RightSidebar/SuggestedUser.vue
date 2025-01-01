@@ -27,8 +27,8 @@ const requestFriend = (id: number) => {
             <div class="flex min-w-0 items-center space-x-3">
                 <div class="relative h-12 w-12">
                     <img
-                        :src="user.profile_picture || '/default-avatar.png'"
-                        :alt="user.name"
+                        :src="$page.props.auth.user.profile_picture || '/default-avatar.png'"
+                        :alt="$page.props.auth.user.name"
                         class="h-12 w-12 rounded-full object-cover ring-2 ring-white"
                     />
                     <span
