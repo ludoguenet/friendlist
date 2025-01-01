@@ -11,6 +11,15 @@ export interface FileAttachment {
     name: string;
 }
 
+export interface Feed {
+    id: number;
+    user: User;
+    body: string;
+    created_at: string;
+    updated_at: string;
+    attachments: FileAttachment[];
+}
+
 export type PageProps<
     T extends Record<string, unknown> = Record<string, unknown>,
 > = T & {

@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Models\Feed;
 use Inertia\Inertia;
 
 class DashboardController extends Controller
 {
     public function __invoke()
     {
-        return Inertia::render('Dashboard');
+        $feeds = Feed::with('user', 'attachments')->latest()->get();
+
+        return Inertia::render('Dashboard', compact('feeds'));
     }
 }

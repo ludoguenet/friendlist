@@ -2,19 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Feed;
-use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Validation\Rules\File;
 
 class FeedController extends Controller
 {
-    public function index()
-    {
-        return Feed::with('user', 'attachments')->latest()->get();
-    }
-
     public function store(Request $request)
     {
         $validated = $request->validate([

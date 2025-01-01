@@ -17,7 +17,10 @@ import SidebarLinks from '@/Components/SidebarLinks.vue';
                         <ProfileCard
                             :name="$page.props.auth.user.name"
                             role="Software Engineer"
-                            :avatar="$page.props.auth.user.profile_picture || '/default-avatar.png'"
+                            :avatar="
+                                $page.props.auth.user.profile_picture ||
+                                '/default-avatar.png'
+                            "
                         />
                         <SidebarLinks />
                     </div>
