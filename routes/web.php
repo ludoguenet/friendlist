@@ -17,12 +17,8 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', DashboardController::class)->middleware(['auth', 'verified'])->name('dashboard');
-
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/dashboard', DashboardController::class)->name('dashboard');
 
     Route::resource('feeds', FeedController::class);
 
@@ -33,6 +29,10 @@ Route::middleware('auth')->group(function () {
         Route::post('/request/{friend}', [FriendController::class, 'request'])->name('request');
         Route::post('/accept/{friend}', [FriendController::class, 'accept'])->name('accept');
     });
+
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 require __DIR__.'/auth.php';
